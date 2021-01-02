@@ -1,0 +1,5 @@
+sourceControl {
+    gitRepository('https://github.com/gradle/native-samples-cpp-library.git') {
+        producesModule('org.gradle.cpp-samples:utilities')
+    }
+}
