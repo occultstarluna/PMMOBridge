@@ -22,6 +22,9 @@ import wayoftime.bloodmagic.potion.BloodMagicPotions;
 
 import java.util.Map;
 
+import static com.minttea.pmmobridge.config.Config.LP_DRAIN;
+import static com.minttea.pmmobridge.config.Config.LP_SACRIFICE;
+
 
 public class BloodCompatEventHandler {
 
@@ -57,16 +60,15 @@ public class BloodCompatEventHandler {
     public static void awardSacrificeXp(SacrificeKnifeUsedEvent event)
     {
         int lpadded = event.lpAdded;
-        int xpaward = lpadded/10;
+        Double xpaward = lpadded * LP_SACRIFICE.get();
         Skill.MAGIC.addXp(event.player.getUniqueID(), xpaward, null,  true, false);
     }
     @SubscribeEvent
     public static void awardSoulDrainXp(SoulNetworkEvent.Syphon event)
     {
-        LOGGER.debug("EVENT DETECTED");
         PlayerEntity player = event.getNetwork().getPlayer();
         int lpDrained = event.getTicket().getAmount();
-        int xpaward = lpDrained/10;
+        double xpaward = lpDrained * LP_DRAIN.get();
         LOGGER.debug("awarding "+xpaward+"xp!");
         Skill.MAGIC.addXp(player.getUniqueID(), xpaward, null, true, false);
     }

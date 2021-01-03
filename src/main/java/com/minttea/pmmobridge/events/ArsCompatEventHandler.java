@@ -4,6 +4,7 @@ import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.MaxManaCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import com.minttea.pmmobridge.config.Config;
 import harmonised.pmmo.skills.Skill;
 import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,15 +24,15 @@ public class ArsCompatEventHandler {
     {
         LivingEntity entity = event.getEntityLiving();
         List<AbstractSpellPart> spell = event.spell;
-        int xpAward = 1;
+        Double xpAward = 1.0;
         LOGGER.debug("Spell cast!");
         for (AbstractSpellPart spellpart: spell
              ) {
             LOGGER.debug("Adding xp for "+ spellpart.name);
             switch(spellpart.getTier()){
-                case THREE: xpAward = 26;Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
-                case TWO: xpAward = 12;Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
-                case ONE: xpAward = 5;Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
+                case THREE: xpAward = Config.SPELL_TIER_3.get();Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
+                case TWO: xpAward =  Config.SPELL_TIER_2.get();;Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
+                case ONE: xpAward =  Config.SPELL_TIER_1.get();;Skill.MAGIC.addXp(entity.getUniqueID(), xpAward , null, true, false);break;
                 default:
 
             }
@@ -45,7 +46,7 @@ public class ArsCompatEventHandler {
     {
         int magicLevel = Skill.MAGIC.getLevel(event.getEntity().getUniqueID());
         int maxMana = event.getMax();
-        float manaBonus = 1+ (float)magicLevel/20;
+        double manaBonus = 1+ magicLevel * Config.MAX_BONUS.get();
         LOGGER.debug("Changing mana from " + maxMana + " by " + manaBonus);
         event.setMax((int)(maxMana * manaBonus));
     }
@@ -54,7 +55,7 @@ public class ArsCompatEventHandler {
     {
         int magicLevel = Skill.MAGIC.getLevel(event.getEntity().getUniqueID());
         int regen = (int) event.getRegen();
-        float manaBonus = 1+(float) magicLevel/20;
+        double manaBonus = 1+ magicLevel * Config.REGEN_BONUS.get();
         event.setRegen((int)(regen * manaBonus));
     }
 
