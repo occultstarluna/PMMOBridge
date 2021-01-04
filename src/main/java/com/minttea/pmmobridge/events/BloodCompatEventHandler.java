@@ -2,7 +2,6 @@ package com.minttea.pmmobridge.events;
 
 
 import harmonised.pmmo.config.JType;
-import harmonised.pmmo.skills.Skill;
 import harmonised.pmmo.util.XP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -49,7 +48,7 @@ public class BloodCompatEventHandler {
                 attacked.getEntity().getEntityString();
                 Map<String, Double> xpAwardMap = XP.getXp(attacked.getEntity().getEntityString(), JType.XP_VALUE_KILL);
                 Double xpAward = xpAwardMap.get("combat");
-                Skill.MAGIC.addXp(attacker.getUniqueID(), xpAward, null, true, false);
+               // Skill.MAGIC.addXp(attacker.getUniqueID(), xpAward, null, true, false);
             }
 
             //XP.awardXpTrigger(attacker.getUniqueID(), "bloodmagic.will.kill", null, true,false);
@@ -59,9 +58,12 @@ public class BloodCompatEventHandler {
     @SubscribeEvent
     public static void awardSacrificeXp(SacrificeKnifeUsedEvent event)
     {
+        LOGGER.debug("sacrificed " + event.lpAdded + " lp 7654");
         int lpadded = event.lpAdded;
         Double xpaward = lpadded * LP_SACRIFICE.get();
-        Skill.MAGIC.addXp(event.player.getUniqueID(), xpaward, null,  true, false);
+        XP.awardXp(XP.getPlayerByUUID(event.player.getUniqueID()), "magic",null, xpaward,false,false,false);
+        //Skill.MAGIC.addXp(event.player.getUniqueID(), xpaward, null,  true, false);
+
     }
     @SubscribeEvent
     public static void awardSoulDrainXp(SoulNetworkEvent.Syphon event)
@@ -70,7 +72,7 @@ public class BloodCompatEventHandler {
         int lpDrained = event.getTicket().getAmount();
         double xpaward = lpDrained * LP_DRAIN.get();
         LOGGER.debug("awarding "+xpaward+"xp!");
-        Skill.MAGIC.addXp(player.getUniqueID(), xpaward, null, true, false);
+        XP.awardXp(XP.getPlayerByUUID(player.getUniqueID()), "magic",null, xpaward,false,false,false);
     }
 
 }
