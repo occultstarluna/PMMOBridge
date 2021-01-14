@@ -12,9 +12,7 @@ public class Config {
 
     public static ForgeConfigSpec SERVER_CONFIG;
 
-    public static ForgeConfigSpec.ConfigValue<Double> SPELL_TIER_1;
-    public static ForgeConfigSpec.ConfigValue<Double> SPELL_TIER_2;
-    public static ForgeConfigSpec.ConfigValue<Double> SPELL_TIER_3;
+    public static ForgeConfigSpec.ConfigValue<Double> MANA_XP;
     public static ForgeConfigSpec.ConfigValue<Double> MAX_BONUS;
     public static ForgeConfigSpec.ConfigValue<Double> REGEN_BONUS;
 
@@ -26,9 +24,7 @@ public class Config {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
             SERVER_BUILDER.comment("Ars Nouveau").push("ARS");
-            SPELL_TIER_1 = SERVER_BUILDER.comment("XP for a tier 1 spell").define("ars_tier_1", 5.0d);
-            SPELL_TIER_2 = SERVER_BUILDER.comment("XP for a tier 2 spell").define("ars_tier_2", 12.0d);
-            SPELL_TIER_3 = SERVER_BUILDER.comment("XP for a tier 3 spell").define("ars_tier_3", 26.0d);
+            MANA_XP = SERVER_BUILDER.comment("XP gained per Mana spent").define("ars_mana", 0.5d);
             MAX_BONUS = SERVER_BUILDER.comment("% Bonus to Max Mana per level").define("ars_max_bonus", .05d);
             REGEN_BONUS = SERVER_BUILDER.comment("% Bonus to Mana Regen per level").define("ars_regen_bonus", .05d);
             SERVER_BUILDER.pop();

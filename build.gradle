@@ -19,7 +19,7 @@ apply plugin: 'maven-publish'
 apply plugin: "com.wynprice.cursemaven"
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.16.4-1.0.0'
+version = '1.16.4-1.0.3'
 group = 'com.minttea.pmmobridge' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'pmmobridge'
 repositories {
@@ -136,8 +136,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:curios:3122651")
     compileOnly fg.deobf("curse.maven:patchouli:3126931")
     runtimeOnly fg.deobf("curse.maven:patchouli:3126931")
-    compileOnly fg.deobf("curse.maven:ars-noveau:3146894")
-    runtimeOnly fg.deobf("curse.maven:ars-noveau:3146894")
+    compileOnly fg.deobf("curse.maven:ars-noveau:3157929")
+    runtimeOnly fg.deobf("curse.maven:ars-noveau:3157929")
     compileOnly fg.deobf("curse.maven:project-mmo:3157194")
     runtimeOnly fg.deobf("curse.maven:project-mmo:3157194")
     compileOnly fg.deobf("curse.maven:blood-magic:3149693")

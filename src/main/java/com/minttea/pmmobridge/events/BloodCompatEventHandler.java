@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.Difficulty;
@@ -31,7 +32,7 @@ public class BloodCompatEventHandler {
 
 
 
-    @SubscribeEvent
+    //@SubscribeEvent
     public static void awardWillXp(LivingDropsEvent event)
     {
         LivingEntity attacked = event.getEntityLiving();
@@ -58,21 +59,33 @@ public class BloodCompatEventHandler {
     @SubscribeEvent
     public static void awardSacrificeXp(SacrificeKnifeUsedEvent event)
     {
-        LOGGER.debug("sacrificed " + event.lpAdded + " lp 7654");
-        int lpadded = event.lpAdded;
-        Double xpaward = lpadded * LP_SACRIFICE.get();
-        XP.awardXp(XP.getPlayerByUUID(event.player.getUniqueID()), "magic",null, xpaward,false,false,false);
-        //Skill.MAGIC.addXp(event.player.getUniqueID(), xpaward, null,  true, false);
+        if(!event.player.world.isRemote()) {
+            LOGGER.debug("sacrificed " + event.lpAdded + " lp 7654");
+            int lpadded = event.lpAdded;
+            LOGGER.debug("UUID: " + event.player.getUniqueID().toString());
+            ServerPlayerEntity player = XP.getPlayerByUUID(event.player.getUniqueID());
+
+            Double xpaward = lpadded * LP_SACRIFICE.get();
+            if (player != null) {
+                XP.awardXp(player, "magic", null, xpaward, false, false, false);
+            }
+            //Skill.MAGIC.addXp(event.player.getUniqueID(), xpaward, null,  true, false);
+        }
 
     }
     @SubscribeEvent
     public static void awardSoulDrainXp(SoulNetworkEvent.Syphon event)
     {
-        PlayerEntity player = event.getNetwork().getPlayer();
-        int lpDrained = event.getTicket().getAmount();
-        double xpaward = lpDrained * LP_DRAIN.get();
-        LOGGER.debug("awarding "+xpaward+"xp!");
-        XP.awardXp(XP.getPlayerByUUID(player.getUniqueID()), "magic",null, xpaward,false,false,false);
+        if(!event.getNetwork().getPlayer().world.isRemote()) {
+            ServerPlayerEntity player = XP.getPlayerByUUID(event.getNetwork().getPlayer().getUniqueID());
+
+            int lpDrained = event.getTicket().getAmount();
+            double xpaward = lpDrained * LP_DRAIN.get();
+            LOGGER.debug("awarding " + xpaward + "xp!");
+            if (player != null) {
+                XP.awardXp(player, "magic", null, xpaward, false, false, false);
+            }
+        }
     }
 
 }

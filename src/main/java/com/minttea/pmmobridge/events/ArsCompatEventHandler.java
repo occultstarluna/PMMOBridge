@@ -3,6 +3,7 @@ package com.minttea.pmmobridge.events;
 import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.MaxManaCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
+import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import com.minttea.pmmobridge.config.Config;
 import harmonised.pmmo.skills.Skill;
@@ -30,29 +31,21 @@ public class ArsCompatEventHandler {
         ServerPlayerEntity player = XP.getPlayerByUUID(uuid);
         if(player != null) {
             List<AbstractSpellPart> spell = event.spell;
-            Double xpAward = 1.0;
+            Double manacost = 0.0;
+            boolean hasEffect = false;
             LOGGER.debug("Spell cast!");
             for (AbstractSpellPart spellpart : spell
             ) {
                 LOGGER.debug("Adding xp for " + spellpart.name);
-                switch (spellpart.getTier()) {
-                    case THREE:
-                        xpAward = Config.SPELL_TIER_3.get();
-                        XP.awardXp(player, "magic", null, xpAward, false, false, false);
-                        break;
-                    case TWO:
-                        xpAward = Config.SPELL_TIER_2.get();
-                        XP.awardXp(player, "magic", null, xpAward, false, false, false);
-                        break;
-                    case ONE:
-                        xpAward = Config.SPELL_TIER_1.get();
-                        XP.awardXp(player, "magic", null, xpAward, false, false, false);
-                        break;
-                    default:
+                if(spellpart instanceof AbstractEffect)
+                    hasEffect = true;
 
-                }
-
-
+                manacost+=spellpart.getManaCost();
+            }
+            if(hasEffect)
+            {
+                Double xpAward = Config.MANA_XP.get() * manacost;
+                XP.awardXp(player, "magic", null, xpAward, false, false, false);
             }
         }
 
