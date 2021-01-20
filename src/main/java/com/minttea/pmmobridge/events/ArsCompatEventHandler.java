@@ -5,6 +5,7 @@ import com.hollingsworth.arsnouveau.api.event.MaxManaCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
+import com.hollingsworth.arsnouveau.api.spell.Spell;
 import com.minttea.pmmobridge.config.Config;
 import harmonised.pmmo.skills.Skill;
 import harmonised.pmmo.util.XP;
@@ -30,11 +31,11 @@ public class ArsCompatEventHandler {
         UUID uuid = entity.getUniqueID();
         ServerPlayerEntity player = XP.getPlayerByUUID(uuid);
         if(player != null) {
-            List<AbstractSpellPart> spell = event.spell;
+            Spell spell = event.spell;
             Double manacost = 0.0;
             boolean hasEffect = false;
             LOGGER.debug("Spell cast!");
-            for (AbstractSpellPart spellpart : spell
+            for (AbstractSpellPart spellpart : spell.recipe
             ) {
                 LOGGER.debug("Adding xp for " + spellpart.name);
                 if(spellpart instanceof AbstractEffect)
@@ -44,7 +45,7 @@ public class ArsCompatEventHandler {
             }
             if(hasEffect)
             {
-                Double xpAward = Config.MANA_XP.get() * manacost;
+                double xpAward = Config.MANA_XP.get() * manacost;
                 XP.awardXp(player, "magic", null, xpAward, false, false, false);
             }
         }
