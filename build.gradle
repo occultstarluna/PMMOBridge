@@ -21,7 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: "com.wynprice.cursemaven"
 
-version = '1.16.5-1.0.5'
+version = '1.16.5-1.0.6'
 group = 'com.minttea.pmmobridge' // https://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'pmmobridge'
 
