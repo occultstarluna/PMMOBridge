@@ -1,0 +1,16 @@
+{
+  "required": false,
+  "package": "com.minttea.pmmobridge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "pmmobridge.refmap.json",
+  "mixins": [
+  ],
+  "server": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
