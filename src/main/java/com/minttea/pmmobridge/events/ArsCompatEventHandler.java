@@ -63,10 +63,10 @@ public class ArsCompatEventHandler {
     @SubscribeEvent
     public static void manaRegenByLevel(ManaRegenCalcEvent event)
     {
-        int magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
-        int regen = (int) event.getRegen();
+        double magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
+        double regen = (double) event.getRegen();
         double manaBonus = 1+ magicLevel * Config.REGEN_BONUS.get();
-        event.setRegen((int)(regen * manaBonus));
+        event.setRegen((double) (regen * manaBonus));
     }
 
 }

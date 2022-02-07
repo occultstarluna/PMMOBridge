@@ -1,8 +1,9 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url  = 'https://plugins.gradle.org/m2/' }
-        maven { url='https://dist.creeper.host/Sponge/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = 'https://repo.spongepowered.org/maven' }
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        maven { url = 'https://dist.creeper.host/Sponge/maven' }
         jcenter()
         mavenCentral()
     }
@@ -19,13 +20,13 @@ apply plugin: 'maven-publish'
 apply plugin: "com.wynprice.cursemaven"
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.16.4-1.0.4'
+version = '1.16.4-1.0.5'
 group = 'com.minttea.pmmobridge' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'pmmobridge'
 repositories {
     maven {
         url "http://dvs1.progwml6.com/files/maven/"
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
 
     }
 
@@ -136,8 +137,8 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:curios:3122651")
     compileOnly fg.deobf("curse.maven:patchouli:3126931")
     runtimeOnly fg.deobf("curse.maven:patchouli:3126931")
-    compileOnly fg.deobf("curse.maven:ars-noveau:3174543")
-    runtimeOnly fg.deobf("curse.maven:ars-noveau:3174543")
+    compileOnly fg.deobf("curse.maven:ars-noveau:3328921")
+    runtimeOnly fg.deobf("curse.maven:ars-noveau:3328921")
     compileOnly fg.deobf("curse.maven:project-mmo:3157194")
     runtimeOnly fg.deobf("curse.maven:project-mmo:3157194")
     compileOnly fg.deobf("curse.maven:blood-magic:3149693")
