@@ -47,7 +47,7 @@ public class BloodCompatEventHandler {
             {
                 IDemonWillWeapon weapon = (IDemonWillWeapon) held.getItem();
                 attacked.getEntity().getEntityString();
-                Map<String, Double> xpAwardMap = XP.getXp(attacked.getEntity().getEntityString(), JType.XP_VALUE_KILL);
+                Map<String, Double> xpAwardMap = XP.getXp(attacked.getEntity(), JType.XP_VALUE_KILL);
                 Double xpAward = xpAwardMap.get("combat");
                // Skill.MAGIC.addXp(attacker.getUniqueID(), xpAward, null, true, false);
             }

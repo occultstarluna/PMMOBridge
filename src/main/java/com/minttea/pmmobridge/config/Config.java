@@ -24,9 +24,9 @@ public class Config {
         ForgeConfigSpec.Builder SERVER_BUILDER = new ForgeConfigSpec.Builder();
 
             SERVER_BUILDER.comment("Ars Nouveau").push("ARS");
-            MANA_XP = SERVER_BUILDER.comment("XP gained per Mana spent").define("ars_mana", 0.5d);
-            MAX_BONUS = SERVER_BUILDER.comment("% Bonus to Max Mana per level").define("ars_max_bonus", .05d);
-            REGEN_BONUS = SERVER_BUILDER.comment("% Bonus to Mana Regen per level").define("ars_regen_bonus", .05d);
+            MANA_XP = SERVER_BUILDER.comment("XP gained per Mana spent").define("ars_mana", 0.1d);
+            MAX_BONUS = SERVER_BUILDER.comment("% Bonus to Max Mana per level").define("ars_max_bonus", .01d);
+            REGEN_BONUS = SERVER_BUILDER.comment("% Bonus to Mana Regen per level").define("ars_regen_bonus", .00666d);
             SERVER_BUILDER.pop();
 
 
