@@ -3,6 +3,7 @@ package com.minttea.pmmobridge.events;
 import com.hollingsworth.arsnouveau.api.event.ManaRegenCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.MaxManaCalcEvent;
 import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
+import com.hollingsworth.arsnouveau.api.event.SpellModifierEvent;
 import com.hollingsworth.arsnouveau.api.spell.AbstractEffect;
 import com.hollingsworth.arsnouveau.api.spell.AbstractSpellPart;
 import com.hollingsworth.arsnouveau.api.spell.Spell;
@@ -10,6 +11,7 @@ import com.minttea.pmmobridge.config.Config;
 import harmonised.pmmo.skills.Skill;
 import harmonised.pmmo.util.XP;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -51,22 +53,33 @@ public class ArsCompatEventHandler {
         }
 
     }
+
+    @SubscribeEvent
+    public static void dmgMultiplierByLevel(SpellModifierEvent event){
+        if (event.caster instanceof PlayerEntity){
+            PlayerEntity player = (PlayerEntity) event.caster;
+            int magicLevel = Skill.getLevel("magic", player.getUniqueID());
+            double magicProficency = magicLevel * Config.LEVEL_TO_SPELL_DMG.get();
+            event.builder.addDamageModifier(magicProficency);
+        }
+    }
+
     @SubscribeEvent
     public static void maxManaByLevel(MaxManaCalcEvent event)
     {
         int magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
         int maxMana = event.getMax();
-        double manaBonus = 1+ magicLevel * Config.MAX_BONUS.get();
+        double manaBonus = 1.0 + magicLevel * Config.MAX_BONUS.get();
         LOGGER.debug("Changing mana from " + maxMana + " by " + manaBonus);
         event.setMax((int)(maxMana * manaBonus));
     }
     @SubscribeEvent
     public static void manaRegenByLevel(ManaRegenCalcEvent event)
     {
-        int magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
-        int regen = (int) event.getRegen();
-        double manaBonus = 1+ magicLevel * Config.REGEN_BONUS.get();
-        event.setRegen((int)(regen * manaBonus));
+        double magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
+        double regen = event.getRegen();
+        double manaBonus = 1.0 + magicLevel * Config.REGEN_BONUS.get();
+        event.setRegen(regen * manaBonus);
     }
 
 }
