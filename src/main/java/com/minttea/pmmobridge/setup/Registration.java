@@ -3,6 +3,7 @@ package com.minttea.pmmobridge.setup;
 import com.minttea.pmmobridge.PMMOBridgeMod;
 import com.minttea.pmmobridge.events.ArsCompatEventHandler;
 import com.minttea.pmmobridge.events.BloodCompatEventHandler;
+import com.minttea.pmmobridge.events.ScalingArsCompatEventHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -27,6 +28,10 @@ public class Registration {
         if(ModList.get().isLoaded("ars_nouveau")){
             LOGGER.debug("Ars Nouveau detected!  Patching in! 7765");
             MinecraftForge.EVENT_BUS.register(ArsCompatEventHandler.class);
+            if (ModList.get().isLoaded("scaling_health")){
+                LOGGER.debug("Scaling Health detected too!  Patching in! 7765");
+                MinecraftForge.EVENT_BUS.register(ScalingArsCompatEventHandler.class);
+            }
         }
         if(ModList.get().isLoaded("bloodmagic")){
             LOGGER.debug("Blood Magic detected!  Patching in! 7765");
