@@ -28,7 +28,7 @@ public class ArsCompatEventHandler {
     public static void awardSpellCastXp(SpellCastEvent event)
     {
         LivingEntity entity = event.getEntityLiving();
-        UUID uuid = entity.getUniqueID();
+        UUID uuid = entity.getUUID();
         ServerPlayerEntity player = XP.getPlayerByUUID(uuid);
         if(player != null) {
             Spell spell = event.spell;
@@ -37,7 +37,7 @@ public class ArsCompatEventHandler {
             LOGGER.debug("Spell cast!");
             for (AbstractSpellPart spellpart : spell.recipe
             ) {
-                LOGGER.debug("Adding xp for " + spellpart.name);
+                LOGGER.debug("Adding xp for {0}", spellpart.name);
                 if(spellpart instanceof AbstractEffect)
                     hasEffect = true;
 
@@ -54,16 +54,16 @@ public class ArsCompatEventHandler {
     @SubscribeEvent
     public static void maxManaByLevel(MaxManaCalcEvent event)
     {
-        int magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
+        int magicLevel = Skill.getLevel("magic", event.getEntity().getUUID());
         int maxMana = event.getMax();
         double manaBonus = 1+ magicLevel * Config.MAX_BONUS.get();
-        LOGGER.debug("Changing mana from " + maxMana + " by " + manaBonus);
+        //LOGGER.debug("Changing mana from " + maxMana + " by " + manaBonus);
         event.setMax((int)(maxMana * manaBonus));
     }
     @SubscribeEvent
     public static void manaRegenByLevel(ManaRegenCalcEvent event)
     {
-        double magicLevel = Skill.getLevel("magic", event.getEntity().getUniqueID());
+        double magicLevel = Skill.getLevel("magic", event.getEntity().getUUID());
         double regen = (double) event.getRegen();
         double manaBonus = 1+ magicLevel * Config.REGEN_BONUS.get();
         event.setRegen((double) (regen * manaBonus));
