@@ -37,16 +37,16 @@ public class BloodCompatEventHandler {
     {
         LivingEntity attacked = event.getEntityLiving();
         DamageSource source = event.getSource();
-        Entity attacker = source.getTrueSource();
-        if (attacked.isPotionActive(BloodMagicPotions.SOUL_SNARE) && (attacked instanceof MobEntity || attacked.getEntityWorld().getDifficulty() == Difficulty.PEACEFUL)
+        Entity attacker = source.getEntity();
+        if (attacked.hasEffect(BloodMagicPotions.SOUL_SNARE) && (attacked instanceof MobEntity || attacked.getEntity().level.getDifficulty() == Difficulty.PEACEFUL)
                 && (attacker != null && attacker instanceof PlayerEntity))
         {
             PlayerEntity player = (PlayerEntity) attacker;
-            ItemStack held = player.getHeldItemMainhand();
-            if(held.getItem() instanceof IDemonWillWeapon && !player.getEntityWorld().isRemote)
+            ItemStack held = player.getMainHandItem();
+            if(held.getItem() instanceof IDemonWillWeapon && !player.getCommandSenderWorld().isClientSide)
             {
                 IDemonWillWeapon weapon = (IDemonWillWeapon) held.getItem();
-                attacked.getEntity().getEntityString();
+                attacked.getEntity().getEncodeId();
                 Map<String, Double> xpAwardMap = XP.getXp(attacked.getEntity(), JType.XP_VALUE_KILL);
                 Double xpAward = xpAwardMap.get("combat");
                // Skill.MAGIC.addXp(attacker.getUniqueID(), xpAward, null, true, false);
@@ -59,11 +59,11 @@ public class BloodCompatEventHandler {
     @SubscribeEvent
     public static void awardSacrificeXp(SacrificeKnifeUsedEvent event)
     {
-        if(!event.player.world.isRemote()) {
+        if(!event.player.level.isClientSide()) {
             LOGGER.debug("sacrificed " + event.lpAdded + " lp 7654");
             int lpadded = event.lpAdded;
-            LOGGER.debug("UUID: " + event.player.getUniqueID().toString());
-            ServerPlayerEntity player = XP.getPlayerByUUID(event.player.getUniqueID());
+            LOGGER.debug("UUID: " + event.player.getStringUUID());
+            ServerPlayerEntity player = XP.getPlayerByUUID(event.player.getUUID());
 
             Double xpaward = lpadded * LP_SACRIFICE.get();
             if (player != null) {
@@ -76,8 +76,8 @@ public class BloodCompatEventHandler {
     @SubscribeEvent
     public static void awardSoulDrainXp(SoulNetworkEvent.Syphon event)
     {
-        if(!event.getNetwork().getPlayer().world.isRemote()) {
-            ServerPlayerEntity player = XP.getPlayerByUUID(event.getNetwork().getPlayer().getUniqueID());
+        if(!event.getNetwork().getPlayer().level.isClientSide()) {
+            ServerPlayerEntity player = XP.getPlayerByUUID(event.getNetwork().getPlayer().getUUID());
 
             int lpDrained = event.getTicket().getAmount();
             double xpaward = lpDrained * LP_DRAIN.get();
